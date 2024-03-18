@@ -11,6 +11,7 @@
  * @type {object}
  */
 const express = require('express');
+const {faker, } = require('@faker-js/faker');
 
 const app = express();
 const port = 3000;
@@ -20,12 +21,18 @@ app.get('/', (req, res) => {
 });
 
 app.get('/products', (req, res) => {
-  res.json([
-    { id: 1, name: 'Producto 1', price: 100 },
-    { id: 2, name: 'Producto 2', price: 200 },
+  const products = [];
+  for (let i = 0; i < 10; i++) {
+    products.push({
+      id: i,
+      name: faker.commerce.productName(), // `Producto ${i},
+      price: faker.commerce.price(),
+      description: faker.commerce.productDescription(),
 
+    });
+  }
+  res.json(products);
 
-  ]);
 });
 app.get('/products/:id', (req, res) => {
   const  {id} = req.params;
@@ -40,8 +47,6 @@ app.get('/categories', (req, res) => {
     name: 'Categoria 1',
   });
 });
-
-
 app.get("/categories/:categorityId/products/:productId", (req, res) => {
   const { categorityId, productId } = req.params;
   res.json([
@@ -51,7 +56,6 @@ app.get("/categories/:categorityId/products/:productId", (req, res) => {
 
   ]);
 });
-
 app.get('/users', (req, res) => {
   res.json({
     id: 1,
@@ -66,7 +70,6 @@ app.get('/users/:usersId/orders/:ordersId', (req, res) => {
     ordersId,
   });
 });
-
 app.get("/home", (req, res) => {
   res.send("Bienvenido a la página de inicio");
 });
