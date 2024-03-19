@@ -11,68 +11,23 @@
  * @type {object}
  */
 const express = require('express');
-const {faker, } = require('@faker-js/faker');
+const routerApi = require('./routes');
+
 
 const app = express();
 const port = 3000;
+
+app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('¡Hola, mundo!');
 });
 
-app.get('/products', (req, res) => {
-  const products = [];
-  for (let i = 0; i < 10; i++) {
-    products.push({
-      id: i,
-      name: faker.commerce.productName(), // `Producto ${i},
-      price: faker.commerce.price(),
-      description: faker.commerce.productDescription(),
-
-    });
-  }
-  res.json(products);
-
-});
-app.get('/products/:id', (req, res) => {
-  const  {id} = req.params;
-  res.json({
-    id,
-    name: `Producto ${req.params.id}`,
-    price: 100,
-  });
-},);
-app.get('/categories', (req, res) => {
-  res.json({
-    name: 'Categoria 1',
-  });
-});
-app.get("/categories/:categorityId/products/:productId", (req, res) => {
-  const { categorityId, productId } = req.params;
-  res.json([
-    {
-      categorityId, productId
-    },
-
-  ]);
-});
-app.get('/users', (req, res) => {
-  res.json({
-    id: 1,
-    name: 'Lobsang',
-    age: 30,
-  });
-});
-app.get('/users/:usersId/orders/:ordersId', (req, res) => {
-  const { usersId, ordersId } = req.params;
-  res.json({
-    usersId,
-    ordersId,
-  });
-});
 app.get("/home", (req, res) => {
   res.send("Bienvenido a la página de inicio");
 });
+
+routerApi(app);
 
 app.listen(port, () => {
   console.log(`Servidor escuchando en http://localhost:${port}`);
